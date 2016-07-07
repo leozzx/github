@@ -1,0 +1,9 @@
+('/Users/leo/Documents/python/moonbbs/build/specfile/specfile',
+ True,
+ False,
+ None,
+ None,
+ [],
+ None,
+ False,
+ 1441612186)
