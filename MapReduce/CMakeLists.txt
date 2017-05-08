@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 project (MapReduce)
 set(OUTPUT_BIN build/MapReduce)
-include_directories(boost/boost)
+include_directories(boost)
 link_directories(boost/build)
 add_executable(${OUTPUT_BIN} main.cc)
 target_link_libraries(${OUTPUT_BIN} boost_thread boost_system)
