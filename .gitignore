@@ -1,6 +1,3 @@
 MapReduce/build
-MapReduce/CMakeCache.txt
-MapReduce/cmake_install.cmake
-MapReduce/boost
-MapReduce/CMakeFiles
-MapReduce/Makefile
+MapReduce/third_party/boost
+MapReduce/MapReduce

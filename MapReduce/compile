@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+## goto script directory
+cd $(dirname $0)
+
+BUILD_DIR='build'
+if [ ! -d ${BUILD_DIR} ];then
+  mkdir ${BUILD_DIR}
+fi
+
+cd ${BUILD_DIR}
+
+if [ ! -f Makefile ]; then
+  cmake ..
+fi
+
+make
+
+cd ..
+
+BIN=$(grep "project" CMakeLists.txt | head -1 | sed 's/project (\(.*\))/\1/')
+
+mv ${BUILD_DIR}/${BIN} .

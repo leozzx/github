@@ -41,5 +41,4 @@ class thread_pool {
 
 int main () {
   std::cout << "a" << std::endl;
-
 }
