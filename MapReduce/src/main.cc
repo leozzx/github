@@ -1,44 +1,44 @@
-#include <iostream>       // std::cout
-#include <thread>         // std::thread
-#include <vector>         // std::vector
-#include <deque>         // std::deque
-
-/*
-template <class Fn, class... Args>
-class thread_pool {
-  private:
-    struct Task {
-      Fn&& fn;
-      Args&&... args;
-      Task(Fn&& f, Args&&... a):
-        fn(f), args(a);
-    };
-    struct Worker {
-
-    };
-    std::vector<std::thread> threads;
-    std::deque<task> tasks;
-    int pool_size;
-    void run () {
-
-    }
-
-  public:
-    // default constructor
-    thread_pool() : pool_size(5);
-    // constructor with pool size
-    thread_pool(int num) : pool_size(num);
-    // add task to pool
-    void add_task(Fn&& fn, Args&&... args) {
-      tasks.emplace_back(Task(fn, args));
-    }
-};
-*/
 #include <iostream>
-#include <boost/thread/thread.hpp>
-//#include <boost/bind.hpp>
-//#include <boost/asio.hpp>
+#include <mutex>
+#include "thread_pool.hpp"
+
+void test(int i) {
+      std::cout << "hello " << i << std::endl;
+      boost::this_thread::sleep(boost::posix_time::seconds(3));
+      std::cout << "world " << i << std::endl;
+}
 
 int main () {
-  std::cout << "a" << std::endl;
+  // Create a thread pool of 4 worker threads.
+  ThreadPool pool(4);
+
+  // the container
+  int array[4] = {0,0,0,4};
+  std::cout << "array " << array[3] << std::endl;
+
+  std::mutex mutex;
+  // Queue a bunch of work items.
+  for (int i = 0; i < 8; ++i) {
+    pool.enqueue([&mutex] {
+      std::unique_lock<std::mutex> lock(mutex);
+      std::cout << "hello " << get_thread_id() << std::endl;
+      boost::this_thread::sleep(boost::posix_time::seconds(3));
+      std::cout << "world " << get_thread_id() << std::endl;
+    });
+    pool.enqueue(test, i*2);
+  }
+
+  pool.wait();
+  pool.stop();
+  
+  /*
+  std::mutex m;
+  std::condition_variable condition_;
+  {
+    std::unique_lock<std::mutex> lock1(m);
+    condition_.notify_all();
+    condition_.wait(lock1);
+  }
+  */
+  return 0;
 }

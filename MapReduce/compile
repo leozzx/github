@@ -10,7 +10,8 @@ fi
 
 cd ${BUILD_DIR}
 
-if [ ! -f Makefile ]; then
+if [ ! -f Makefile ] || [ ../CMakeLists.txt -nt Makefile ]
+then
   cmake ..
 fi
 
