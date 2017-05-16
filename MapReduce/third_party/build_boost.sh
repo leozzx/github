@@ -24,7 +24,7 @@ cd ${BOOST_DIR}/boost_*
 
 dist/bin/bcp boost/crc.hpp boost/range/algorithm boost/circular_buffer.hpp boost/iostreams boost/asio.hpp boost/uuid boost/smart_ptr.hpp boost/utility.hpp boost/unordered_set.hpp boost/dynamic_bitset.hpp boost/foreach.hpp boost/unordered_map.hpp boost/property_tree boost/system/ boost/type_traits.hpp boost/config.hpp boost/algorithm/string.hpp  boost/pool boost/thread.hpp boost/thread boost/filesystem.hpp boost/serialization/ boost/date_time.hpp boost/program_options.hpp boost/spirit boost/random/ boost/regex ${BOOST_DIR}
 
-./bjam  link=static variant=release runtime-link=static --disable-icu --with-thread threading=multi
+./bjam  link=static variant=release runtime-link=static --disable-icu --with-thread --with-filesystem threading=multi
 
 mv stage/lib/*.a ${BOOST_BUILD_DIR}
 

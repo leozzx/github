@@ -1,8 +1,4 @@
 #include <iostream>
-#include <boost/thread/thread.hpp>
-#include <boost/bind.hpp>
-#include <boost/asio.hpp>
-#include <boost/function.hpp>
 #include <utility>
 #include <queue>
 #include <thread>

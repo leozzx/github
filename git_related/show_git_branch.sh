@@ -11,4 +11,4 @@ parse_git_branch() {
 }
 GIT_BRANCH="\[\033[32m\]\$(parse_git_branch)\[\033[00m\]"
 
-PS1=$PS1" ${GIT_BRANCH} "
+PS1=$PS1"${GIT_BRANCH} "

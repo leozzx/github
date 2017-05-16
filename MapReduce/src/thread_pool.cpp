@@ -49,14 +49,14 @@ void ThreadPool::run(size_t thread_id) {
     std::unique_lock<std::mutex> lock(mutex_);
     // wait utill get notified and tasks not empty
     // condition.wait won't eat cpu; while 'while' does.
-    std::cout << "|start to wait " << this_thread_id << "|" << std::endl;
+    //std::cout << "|start to wait " << this_thread_id << "|" << std::endl;
     // the wait function will call lock.unlock() while waiting
     // and call lock.lock() when get notified.
     while (!stopped_ && tasks_.empty()) task_wait_.wait(lock);
 
     // check status
     if (stopped_) break;
-    std::cout << "|start to do task|" << std::endl;
+    //std::cout << "|start to do task|" << std::endl;
 
     auto task = tasks_.front();
     tasks_.pop();
@@ -72,7 +72,7 @@ void ThreadPool::run(size_t thread_id) {
       std::cout << "got exception " << std::endl;
     }
 
-    std::cout << "|finish to do task|" << std::endl;
+    //std::cout << "|finish to do task|" << std::endl;
     // task finish, decrese task_size_,
     // and notify if all finished
     lock.lock();
