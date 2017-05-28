@@ -2,8 +2,30 @@ cmake_minimum_required (VERSION 2.6)
 project (MapReduce)
 set(OUTPUT_BIN MapReduce)
 set(CMAKE_CXX_FLAGS "-std=c++0x")
-include_directories(${PROJECT_SOURCE_DIR}/third_party/boost)
+
+## make libray
+file(GLOB MurmurHashFiles ${PROJECT_SOURCE_DIR}/third_party/MurmurHash/*.cpp)
+add_library(MurmurHash ${MurmurHashFiles})
+
+## include -I
+include_directories(
+  ${PROJECT_SOURCE_DIR}/third_party/boost
+  ${PROJECT_SOURCE_DIR}/third_party/boost
+  ${PROJECT_SOURCE_DIR}/third_party/MurmurHash
+  )
+
+## linkage -L
 link_directories(${PROJECT_SOURCE_DIR}/third_party/boost/build)
-file(GLOB SOURCES "src/*.c*")
+
+## all source files
+file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.c*")
 add_executable(${OUTPUT_BIN} ${SOURCES})
-target_link_libraries(${OUTPUT_BIN} boost_thread boost_system boost_filesystem)
+
+## link -l
+target_link_libraries(
+  ${OUTPUT_BIN} 
+  boost_thread 
+  boost_system 
+  boost_filesystem 
+  MurmurHash
+  )
