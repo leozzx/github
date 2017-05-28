@@ -3,6 +3,9 @@
 #include <queue>
 #include <thread>
 
+#ifndef _THREAD_POOL_HPP_
+#define _THREAD_POOL_HPP_
+
 extern thread_local size_t this_thread_id; 
 inline size_t get_thread_id() { return this_thread_id; }
 
@@ -47,3 +50,5 @@ private:
   int32_t task_size_;
   size_t pool_size_;
 };
+
+#endif /* _THREAD_POOL_HPP_ */
