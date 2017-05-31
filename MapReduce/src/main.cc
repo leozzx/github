@@ -4,6 +4,7 @@
 #include <errno.h>
 #include "thread_pool.hpp"
 #include "filesystem.hpp"
+#include "hashmap.hpp"
 
 template<typename ARRAY_t>
 void print_array(std::ostream& os, ARRAY_t array, size_t len) {
@@ -45,6 +46,32 @@ void test(const char* a, int arr[]) {
 }
 
 int main () {
+
+  HashMap<int,int> map;
+  std::cout << map << std::endl;
+  map.put(1,2);
+  map.put(1,3);
+  map.put(2,2);
+  map.put(3,2);
+  map.put(3,4);
+  std::cout << map << std::endl;
+  std::cout << *map.get(1) << " " << *map.get(2) << " " << *map.get(3) << std::endl;
+  map.rehash(1);
+  std::cout << map << std::endl;
+  map.rehash(2);
+  std::cout << map << std::endl;
+  map.rehash(3);
+  std::cout << map << std::endl;
+  map.rehash(9);
+  std::cout << map << std::endl;
+  map.clear();
+  std::cout << map << std::endl;
+
+
+
+// ------------------------------------------------------
+
+
   size_t size = 4;
 
   // Create a thread pool of 4 worker threads.
