@@ -49,14 +49,22 @@ int main () {
 
   HashMap<int,int> map;
   std::cout << map << std::endl;
+  std::cout << "map.count:" << map.count() << std::endl;
   map.put(1,2);
+  std::cout << "map.count:" << map.count() << std::endl;
   map.put(1,3);
+  std::cout << "map.count:" << map.count() << std::endl;
   map.put(2,2);
+  std::cout << "map.count:" << map.count() << std::endl;
   map.put(3,2);
+  std::cout << "map.count:" << map.count() << std::endl;
   map.put(3,4);
+  std::cout << "map.count:" << map.count() << std::endl;
   std::cout << map << std::endl;
   std::cout << *map.get(1) << " " << *map.get(2) << " " << *map.get(3) << std::endl;
+  std::cout << "map.count:" << map.count() << std::endl;
   map.rehash(1);
+  std::cout << "map.count:" << map.count() << std::endl;
   std::cout << map << std::endl;
   map.rehash(2);
   std::cout << map << std::endl;
