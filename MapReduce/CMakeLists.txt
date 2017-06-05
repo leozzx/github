@@ -19,6 +19,7 @@ link_directories(${PROJECT_SOURCE_DIR}/third_party/boost/build)
 
 ## all source files
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.c*")
+#message(${SOURCES})
 add_executable(${OUTPUT_BIN} ${SOURCES})
 
 ## link -l

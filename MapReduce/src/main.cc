@@ -2,9 +2,12 @@
 #include <mutex>
 #include <stdio.h>
 #include <errno.h>
+#include <map>
+#include <unordered_map>
 #include "thread_pool.hpp"
 #include "filesystem.hpp"
 #include "hashmap.hpp"
+#include "timer.hpp"
 
 template<typename ARRAY_t>
 void print_array(std::ostream& os, ARRAY_t array, size_t len) {
@@ -124,5 +127,48 @@ int main () {
     condition_.wait(lock1);
   }
   */
+// ------------------------------------------------------
+
+  HashMap<std::string,int> hashmap;
+  //HashMap<int,int> hashmap;
+  std::unordered_map<std::string,int> unorderedmap;
+  //std::unordered_map<int,int> unorderedmap;
+  std::map<std::string,int> normalmap;
+  //std::map<int,int> normalmap;
+
+  Timer timer;
+
+  int count = 100000;
+  char str[20];
+
+  // the hash map
+  timer.restart();
+  for (int i = -count; i <= count; ++i) {
+    sprintf(str, "%d", i);
+    hashmap.put(std::string(str), i);
+  }
+  std::cout << "hashmap: " << timer.get_timer_ms_str() << std::endl;
+
+  // the unordered map
+  timer.restart();
+  for (int i = -count; i <= count; ++i) {
+    sprintf(str, "%d", i);
+    //unorderedmap.put(i, i);
+    unorderedmap.insert (std::make_pair<std::string,int>(std::string(str),int(i)));
+  }
+  std::cout << "unorderedmap: " << timer.get_timer_ms_str() << std::endl;
+
+  // the ordered map
+  timer.restart();
+  for (int i = -count; i <= count; ++i) {
+    sprintf(str, "%d", i);
+    //normalmap.put(i, i);
+    normalmap.insert (std::make_pair<std::string,int>(std::string(str),int(i)));
+  }
+  std::cout << "orderedmap: " << timer.get_timer_ms_str() << std::endl;
+
+  std::cout << "size: " << hashmap.count() << " " << unorderedmap.size() << " " << normalmap.size() << std::endl;
+
+
   return 0;
 }

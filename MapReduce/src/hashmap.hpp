@@ -69,7 +69,7 @@ class HashMap {
      * put a new key-value pair to the map
      * return true if there is existing value of the key
      */
-    bool put(const Key& key, const Value& value) {
+    inline bool put(const Key& key, const Value& value) {
       return put_internal(key, value, true);
     }
 
@@ -142,11 +142,11 @@ class HashMap {
     typedef LinkedList<Key, Value> array_t;
 
     // get the hash value of the key
-    size_t hash(const Key& k) {
+    inline size_t hash(const Key& k) {
       return hash_func(k) & (bucket_count - 1);
     }
 
-    bool key_equals(const Key& k1, const Key& k2) {
+    inline bool key_equals(const Key& k1, const Key& k2) {
       return equal_func(k1, k2);
     }
 
