@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 2.6)
 project (MapReduce)
 set(OUTPUT_BIN MapReduce)
 set(CMAKE_CXX_FLAGS "-std=c++0x")
+#set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 ## make libray
 file(GLOB MurmurHashFiles ${PROJECT_SOURCE_DIR}/third_party/MurmurHash/*.cpp)

@@ -70,7 +70,7 @@ class HashMap {
      * return true if there is existing value of the key
      */
     inline bool put(const Key& key, const Value& value) {
-      return put_internal(key, value, true);
+      return put_internal(new array_t(key, value), true);
     }
 
     Value* get(const Key& key) {
@@ -150,28 +150,30 @@ class HashMap {
       return equal_func(k1, k2);
     }
 
-    bool put_internal(const Key& key, const Value& value, bool update_size) {
+    bool put_internal(array_t* new_node, bool update_size) {
+      if (new_node == NULL) return false;
+
       bool ret = false;
-      size_t idx = hash(key);
+      size_t idx = hash(new_node->key);
       // the length of the linkedlist
       size_t length = 0;
 
       if (array[idx] == NULL) {
-        array[idx] = new array_t(key, value);
+        array[idx] = new_node;
         length = 1;
       } else {
         auto p = array[idx];
         while (true) {
           ++length;
           // p can't be NULL since we check p->next in last iteration
-          if (key_equals(p->key, key)) {
+          if (key_equals(p->key, new_node->key)) {
             // find the equals key
             // update the value
-            p->value = value;
+            p->value = new_node->value;
             ret = true;
             break;
           } else if (p->next == NULL) {
-            p->next = new array_t(key, value);
+            p->next = new_node;
             break;
           } else {
             // continue find next one
@@ -208,10 +210,16 @@ class HashMap {
       for (uint64_t i = 0; i < old_count; ++i) {
         auto p = old_array[i];
         while (p != NULL) {
-          put_internal(p->key, p->value, false);
-          p = p->next;
+      //std::cout << "rehash " << p->key << "," << p->value << std::endl;
+          auto next = p->next;
+          p->next = NULL;
+          put_internal(p, false);
+          p = next;
         }
       }//end for
+
+      // delete old array
+      delete old_array;
     }
 
     // the array of the key-value pairs
