@@ -1,0 +1,1 @@
+java -cp ".:javax.mail.jar" PlainTextEmailSender "791614645@qq.com" "Hi from Java commandline" "this is a test"
