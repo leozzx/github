@@ -25,12 +25,12 @@ class LinkedList {
     LinkedList(const Key& k, const Value& v) {
       key = k;
       value = v;
-      next = NULL;
+      next = nullptr;
     }
 
     friend std::ostream& operator<< (std::ostream& os, LinkedList& head) {
       LinkedList* p = &head;
-      while (p != NULL) {
+      while (p != nullptr) {
         os << " {" << p->key << "," << p->value << "}";
         p = p->next;
       }
@@ -57,10 +57,10 @@ class HashMap {
     }
 
     ~HashMap() {
-      if (array != NULL) {
+      if (array != nullptr) {
         clear();
-        delete array;
-        array = NULL;
+        delete[] array;
+        array = nullptr;
       }
       size = 0;
     }
@@ -70,15 +70,15 @@ class HashMap {
      * return true if there is existing value of the key
      */
     inline bool put(const Key& key, const Value& value) {
-      return put_internal(new array_t(key, value), true);
+      return put_internal(key, value, nullptr, true);
     }
 
     Value* get(const Key& key) {
-      Value* result = NULL;
+      Value* result = nullptr;
       size_t idx = hash(key);
 
       auto p = array[idx];
-      while (p != NULL) {
+      while (p != nullptr) {
         if (key_equals(p->key, key)) {
           result = &p->value;
           break;
@@ -107,10 +107,10 @@ class HashMap {
       size = 0;
       for (uint64_t i = 0; i < bucket_count; ++i) {
         auto p = array[i];
-        array[i] = NULL;
-        while (p != NULL) {
+        array[i] = nullptr;
+        while (p != nullptr) {
           auto next = p->next;
-          p->next = NULL;
+          p->next = nullptr;
           delete p;
           p = next;
         }
@@ -130,7 +130,7 @@ class HashMap {
       os << "-------- start of map ---------\n";
       for (uint64_t i = 0; i < map.bucket_count; ++i) {
         os << "  " << i << ": [";
-        if (map.array[i] != NULL)
+        if (map.array[i] != nullptr)
           os << *map.array[i];
         os << " ]\n";
       }
@@ -150,30 +150,30 @@ class HashMap {
       return equal_func(k1, k2);
     }
 
-    bool put_internal(array_t* new_node, bool update_size) {
-      if (new_node == NULL) return false;
+    bool put_internal(const Key& key, const Value& value,
+        array_t* new_node, bool update_size) {
 
       bool ret = false;
-      size_t idx = hash(new_node->key);
+      size_t idx = hash(key);
       // the length of the linkedlist
       size_t length = 0;
 
-      if (array[idx] == NULL) {
-        array[idx] = new_node;
+      if (array[idx] == nullptr) {
+        array[idx] = (new_node == nullptr)? new array_t(key, value) : new_node;
         length = 1;
       } else {
         auto p = array[idx];
         while (true) {
           ++length;
-          // p can't be NULL since we check p->next in last iteration
-          if (key_equals(p->key, new_node->key)) {
+          // p can't be nullptr since we check p->next in last iteration
+          if (key_equals(p->key, key)) {
             // find the equals key
             // update the value
-            p->value = new_node->value;
+            p->value = value;
             ret = true;
             break;
-          } else if (p->next == NULL) {
-            p->next = new_node;
+          } else if (p->next == nullptr) {
+            p->next = (new_node == nullptr)? new array_t(key, value) : new_node;
             break;
           } else {
             // continue find next one
@@ -209,17 +209,17 @@ class HashMap {
       // copy old values
       for (uint64_t i = 0; i < old_count; ++i) {
         auto p = old_array[i];
-        while (p != NULL) {
+        while (p != nullptr) {
       //std::cout << "rehash " << p->key << "," << p->value << std::endl;
           auto next = p->next;
-          p->next = NULL;
-          put_internal(p, false);
+          p->next = nullptr;
+          put_internal(p->key, p->value, p, false);
           p = next;
         }
       }//end for
 
       // delete old array
-      delete old_array;
+      delete[] old_array;
     }
 
     // the array of the key-value pairs

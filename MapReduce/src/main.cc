@@ -7,6 +7,7 @@
 #include "thread_pool.hpp"
 #include "filesystem.hpp"
 #include "hashmap.hpp"
+#include "hashmap2.hpp"
 #include "timer.hpp"
 
 template<typename ARRAY_t>
@@ -130,6 +131,7 @@ int main () {
 // ------------------------------------------------------
 
   HashMap<std::string,int> hashmap;
+  HashMap2<std::string,int> hashmap2;
   //HashMap<int,int> hashmap;
   std::unordered_map<std::string,int> unorderedmap;
   //std::unordered_map<int,int> unorderedmap;
@@ -149,6 +151,16 @@ int main () {
   }
   std::cout << "hashmap: " << timer.get_timer_ms_str() << std::endl;
 
+  // the hash map 2
+  timer.restart();
+  for (int i = -count; i <= count; ++i) {
+  //for (int i = -count; i <= -99930; ++i) {
+    sprintf(str, "%d", i);
+  //std::cout << "hashmap2:  " << i << std::endl;
+    hashmap2.put(std::string(str), i);
+  }
+  std::cout << "hashmap2: " << timer.get_timer_ms_str() << std::endl;
+
   // the unordered map
   timer.restart();
   for (int i = -count; i <= count; ++i) {
@@ -167,7 +179,11 @@ int main () {
   }
   std::cout << "orderedmap: " << timer.get_timer_ms_str() << std::endl;
 
-  std::cout << "size: " << hashmap.count() << " " << unorderedmap.size() << " " << normalmap.size() << std::endl;
+  std::cout 
+    << "size: " << hashmap.count() 
+    << " " << hashmap2.count() 
+    << " " << unorderedmap.size() 
+    << " " << normalmap.size() << std::endl;
 
 
   return 0;
