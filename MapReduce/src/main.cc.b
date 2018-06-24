@@ -151,15 +151,24 @@ int main () {
     sprintf(str, "%d", i);
     hashmap.put(std::string(str), i);
   }
-  std::cout << "  hashmap: " << timer.get_timer_ms_str() << std::endl;
+  std::cout << "hashmap: " << timer.get_timer_ms_str() << std::endl;
 
-  // concurrent hash map
   timer.restart();
   for (int i = -count; i <= count; ++i) {
     sprintf(str, "%d", i);
     chashmap.put(std::string(str), i);
   }
   std::cout << "c hashmap: " << timer.get_timer_ms_str() << std::endl;
+
+  // the hash map 2
+  timer.restart();
+  for (int i = -count; i <= count; ++i) {
+  //for (int i = -count; i <= -99930; ++i) {
+    sprintf(str, "%d", i);
+  //std::cout << "hashmap2:  " << i << std::endl;
+    hashmap2.put(std::string(str), i);
+  }
+  std::cout << "hashmap2: " << timer.get_timer_ms_str() << std::endl;
 
   // the unordered map
   timer.restart();
@@ -168,14 +177,23 @@ int main () {
     //unorderedmap.put(i, i);
     unorderedmap.insert (std::make_pair<std::string,int>(std::string(str),int(i)));
   }
-  std::cout << "u hashmap: " << timer.get_timer_ms_str() << std::endl;
+  std::cout << "unorderedmap: " << timer.get_timer_ms_str() << std::endl;
 
+  // the ordered map
+  timer.restart();
+  for (int i = -count; i <= count; ++i) {
+    sprintf(str, "%d", i);
+    //normalmap.put(i, i);
+    normalmap.insert (std::make_pair<std::string,int>(std::string(str),int(i)));
+  }
+  std::cout << "orderedmap: " << timer.get_timer_ms_str() << std::endl;
 
   std::cout 
     << "size: " << hashmap.count() 
     << " " << chashmap.count() 
+    << " " << hashmap2.count() 
     << " " << unorderedmap.size() 
-    << std::endl;
+    << " " << normalmap.size() << std::endl;
 
 
   return 0;
